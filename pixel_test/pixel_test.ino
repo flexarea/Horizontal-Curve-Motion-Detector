@@ -5,6 +5,8 @@
 #define PIN        26
 #define NUMPIXELS 16
 
+
+
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 #define DELAYVAL 50
 
@@ -25,8 +27,13 @@ void setNeo(){
     //pixels.show();
     //delay(DELAYVAL);
   }
+
+  pixels.show();
+  delay(6000);
+  pixels.clear();
   pixels.show();
 }
+
 
 void loop() {
   setNeo();

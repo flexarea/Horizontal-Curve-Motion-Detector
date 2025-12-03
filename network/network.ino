@@ -1,21 +1,9 @@
-/*
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp-now-esp32-arduino-ide/
-  
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files.
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-*/
-
 #include <esp_now.h>
 #include <WiFi.h>
 #include <Arduino.h>
 
 #define RCWL_PIN 26
 
-// REPLACE WITH YOUR RECEIVER MAC Address
 // A8:03:2A: EA: E8:54
 uint8_t broadcastAddress[] = {0xA8, 0x03, 0x2A, 0xEA, 0xE8, 0x54};
 
