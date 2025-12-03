@@ -84,6 +84,7 @@ void loop() {
   if(pinState == HIGH){
     digitalWrite(LED_BUILTIN, HIGH);
     delay(2000);
+    digitalWrite(LED_BUILTIN, LOW);
     transmit();
   }else{
     digitalWrite(LED_BUILTIN, LOW);
