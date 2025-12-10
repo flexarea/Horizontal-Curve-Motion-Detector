@@ -116,3 +116,30 @@ The modular structure of our code also facilitates future enhancements. The data
 ## Results
 
 ![Horizontal curve sketch](./assets/horizontal-curve.png "horizontal curve sketch")
+Figure 1
+![Tunnel](./assets/tunnel.png "Tunnel image")
+Figure 2
+
+When a car approaches one of our units, it signals the other unit to display a red light to oncoming traffic, notifying them that another vehicle is approaching through the narrow passage. Our product communicates to drivers where they should use increased caution in an easy-to-digest format. One possible point of failure for our devices is that since we use a microwave sensor, any movement will trigger a reaction. This could result in an increase of false positive readings cause by weather conditions or non-traffic motion near the sign.
+It is important to note that our product should not be a stand-alone signal and that it should be supplemented with a traffic sign that reflects the layout of the road or promotes caution. 
+
+Accessibility
+Since our project incorporates color signals for drivers, it can be challenging for drivers with color blindness or low-vision impairments to interpret the signal. To mitigate this, redundant cues can help adjust the type of signal given to the driver. An optimal solution would be to communicate with the driver directly and alert them of incoming vehicles, but since we cannot establish such communication at this time, we will instead have the light blink four times at a high brightness level to ensure it is noticeable. Additionally, the device is only on when there is incoming traffic and off otherwise; therefore, regardless of the color, the presence of light always indicates incoming traffic.
+We also considered drivers who might find it difficult to interpret alerts quickly, which is why we kept the system simple; there is light if there is incoming traffic and no light otherwise. The signal will be visible from afar, helping drivers recognize it even during fog or undesirable weather. We will ensure the device is mounted at a height that maximizes visibility while remaining safe for maintenance workers. Since the device uses rechargeable batteries, it will not require external electricity, making it accessible for communities that need it most. In the future, we hope to have the device harness solar energy to power itself.
+Ethical Implications 
+Schedule 
+Issues 
+This is where you discuss the issues you encountered during the project development and what you did to resolve them. What did you change? Did they affect your schedule? Did the affect your original goal?
+
+We have encountered multiple issues in this project. First, we had a hard time mounting everything on the board. Watching tutorials helped us gain foundational knowledge about where everything goes and how to program it. We were able to have the ESP32 communicate with the microwave sensor and read the results. What we were initially unable to do was have the ESP32 turn the Neopixels on. This slowed us down, but we later discovered that we had to connect the ESP32 and the Neopixels to the same ground, quite literally. This setback affected our schedule, but it did not affect the original goal.
+Another issue we faced was the latency between the time the receiver Neopixel turns on and when the sender ESP32 sends a signal. There is about a two-second delay. This created concerns regarding how quickly the device could notify the driver of an incoming vehicle. To solve this, we decided to change where we mount the devices on the road. This adjustment did not affect our schedule significantly, and it did not affect our original goal.
+
+ 
+Future Work
+Given more time and a bigger budget, there are several things we would improve to make a better product. Firstly, we would use a different sensor with more functionality. Since we are working with microwave sensors, our product detects all types of motion. If we had more time and a bigger budget, we would use a different sensor that would be able to detect the difference between a vehicle and other moving objects. Using a different sensor, such as a LIDAR sensor, would help reduce false positives caused by non-traffic-related objects. Secondly, if we had more time, we would use solar energy to power the batteries in our product. This improvement would extend battery life and minimize maintenance of our product while sourcing from clean energy. 
+
+References
+(https://news.mit.edu/2010/explained-doppler-0803)
+(https://highways.dot.gov/safety/rwd/keep-vehicles-road/horizontal-curve-safety)
+(https://projecthub.arduino.cc/tarantula3/all-about-rcwl-0516-microwave-radar-motion-sensor-5aa86d)
+
