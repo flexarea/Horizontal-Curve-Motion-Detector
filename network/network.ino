@@ -14,16 +14,19 @@
 #define RECEIVING 0
 #define SENDING 1
 
+/* === Function declaration === */
+void handle_motion_detected ();
+void OnDataSent(const wifi_tx_info_t *info, esp_now_send_status_t status);
+void OnDataRecv(const esp_now_recv_info_t* info, const uint8_t *incomingData, int len);
+void transmit();
+void setNeo();
+
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
+/* === Global variables === */
 volatile int state_flag = RECEIVING;
-
-// A8:03:2A: EA: E8:54
 uint8_t broadcastAddress[] = {0xA8, 0x03, 0x2A, 0xEA, 0xE8, 0x54};
-//{0xA8, 0x03, 0xEA, 0xE8, 0x54};
 
-// Structure example to send data
-// Must match the receiver structure
 typedef struct struct_message {
   char a[32];
   int b;
@@ -31,12 +34,16 @@ typedef struct struct_message {
   bool d;
 } struct_message;
 
-// Create a struct_message called myData
 struct_message myData;
 
 esp_now_peer_info_t peerInfo;
 
-// callback when data is sent
+/* @OnDataSent
+ *
+ * ESPNOW transmission callback function
+ *
+ * */
+
 void OnDataSent(const wifi_tx_info_t *info, esp_now_send_status_t status) {
 
 
@@ -44,7 +51,12 @@ void OnDataSent(const wifi_tx_info_t *info, esp_now_send_status_t status) {
     Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
 }
 
-/*=== Receiver's logic ===*/
+/* @OnDataRecv
+ *
+ * ESPNOW Receiver's callback function
+ *
+ * */
+
 void OnDataRecv(const esp_now_recv_info_t* info, const uint8_t *incomingData, int len){
   setNeo();
 
@@ -64,30 +76,32 @@ void OnDataRecv(const esp_now_recv_info_t* info, const uint8_t *incomingData, in
 }
 
 void setup() {
-  // Init Serial Monitor
+
   Serial.begin(115200);
 
-  /*pixel configuration*/
+  /* pixel configuration */
 #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
   clock_prescale_set(clock_div_1);
 #endif
 
   pixels.begin();
 
-  /* set interrupt*/
+  /* set interrupt */
   attachInterrupt(RCWL_PIN, my_callback, RISING);
-  // Set device as a Wi-Fi Station
+
+  /* Set device as a Wi-Fi Station */
   WiFi.mode(WIFI_STA);
 
-  // Init ESP-NOW
+  /* Init ESP-NOW */
   if (esp_now_init() != ESP_OK) {
     Serial.println("Error initializing ESP-NOW");
     return;
   }
 
-  /*send packet info*/
+  /* Initialize transmission callback */
   esp_now_register_send_cb(OnDataSent);
-  /*get receive packet info*/
+
+  /* Initialize receiver's callback */
   esp_now_register_recv_cb(OnDataRecv);
 
   // Register peer
@@ -95,7 +109,7 @@ void setup() {
   peerInfo.channel = 0;  
   peerInfo.encrypt = false;
 
-  // Add peer        
+  // Add peer
   if (esp_now_add_peer(&peerInfo) != ESP_OK){
     Serial.println("Failed to add peer");
     return;
@@ -109,9 +123,15 @@ void setup() {
 
 }
 
+/* Interrupt callback*/
 void ARDUINO_ISR_ATTR my_callback() {
   state_flag = SENDING;
 }
+
+/* @handle_motion_detected
+ *
+ * Transmission logic: fill packet fields & call esp_now_send() to transmit packet
+ * */
 
 void transmit(){
   // Set values to send
@@ -132,6 +152,12 @@ void transmit(){
 
 }
 
+/* @handle_motion_detected
+ *
+ * Turn on ESP32 BUILTIN LED, reset state_flag to RECEVING & call transmission()
+ *
+ * */
+
 void handle_motion_detected (){
   digitalWrite(LED_BUILTIN, HIGH);
   delay(2000);
@@ -141,14 +167,17 @@ void handle_motion_detected (){
 }
 
 
+/* @setNeo
+ *
+ * Turn all neopixels RED upon receiving
+ *
+ * */
+
 void setNeo(){
   pixels.clear();
 
   for(int i=0; i<NUMPIXELS; i++) {
-
     pixels.setPixelColor(i, pixels.Color(255, 0, 0));
-    //pixels.show();
-    //delay(DELAYVAL);
   }
 
   pixels.show();
