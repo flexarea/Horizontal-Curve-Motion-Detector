@@ -183,7 +183,7 @@ Firstly, we would use a different sensor with more functionality. Since we are w
 
 Secondly, if we had more time, we would use solar energy to power the batteries in our product. This improvement would extend battery life and minimize maintenance of our product while sourcing from clean energy. 
 
-Finaly, we would write a custom transmission network protocol, that is faster and acknowledge packet receipt
+Finaly, we would write a custom transmission network protocol, that is faster and acknowledge packet receipt.  
 
 ## References
 [1] https://highways.dot.gov/safety/rwd/keep-vehicles-road/horizontal-curve-safety  
